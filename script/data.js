@@ -4,7 +4,7 @@ const importBtn = document.getElementById("import-btn");
 const fileInput = document.getElementById("input-file");
 
 const LIST_QUESTION = "LIST_QUESTION";
-const questionArr = JSON.parse(getFromStorage(LIST_QUESTION, null)) ?? [];
+let questionArr = JSON.parse(getFromStorage(LIST_QUESTION, null)) ?? [];
 
 const saveDinamicDataToFile = function () {
   let fileName = "chemistry.json";
@@ -23,15 +23,15 @@ const readFile = function () {
       const clientChemistryArr = JSON.parse(fr.result) ?? [];
 
       // overide client data with new local data
-      questionArr.forEach((localPet) => {
+      questionArr.forEach((localQuest) => {
         const index = clientChemistryArr.findIndex(
-          (clientPet) => localPet.id === clientPet.id
+          (clientQuest) => localQuest.id === clientQuest.id
         );
         clientChemistryArr.splice(index, 1);
       });
 
       questionArr = questionArr.concat(clientChemistryArr);
-      saveToStorage(LIST_PET, JSON.stringify(questionArr));
+      saveToStorage(LIST_QUESTION, JSON.stringify(questionArr));
       alert("Import successfully");
     });
   } catch (err) {
