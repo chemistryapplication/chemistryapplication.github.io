@@ -13,6 +13,7 @@ const diceEl = document.querySelector('.dice');
 const btnNew = document.querySelector('.btn--new');
 const btnRoll = document.querySelector('.btn--roll');
 const btnHold = document.querySelector('.btn--hold');
+const btnchoosePlayer = document.querySelector('.btn--choosePlayer');
 
 const LIST_QUESTION = 'LIST_QUESTION';
 const questionArr = JSON.parse(getFromStorage(LIST_QUESTION, null)) ?? [];
@@ -22,19 +23,37 @@ let scores, currentScore, activePlayer, playing;
 const init = function () {
   scores = [0, 0];
   currentScore = 0;
-  activePlayer = 0;
+
   playing = true;
+  btnNew.classList.add('hidden');
+  btnchoosePlayer.classList.remove('hidden');
+  btnRoll.classList.add('hidden');
+  btnHold.classList.add('hidden');
 
   score0El.textContent = 0;
   score1El.textContent = 0;
   current0El.textContent = 0;
   current1El.textContent = 0;
   diceEl.classList.add('hidden');
-  btnHold.classList.remove('no-click');
+
   player0El.classList.remove('player--winner');
   player1El.classList.remove('player--winner');
-  player0El.classList.add('player--active');
-  player1El.classList.remove('player--active');
+};
+const choosePlayer = function () {
+  activePlayer = Math.round(Math.random());
+  if (activePlayer == 0) {
+    player0El.classList.add('player--active');
+    player1El.classList.remove('player--active');
+  } else {
+    player0El.classList.remove('player--active');
+    player1El.classList.add('player--active');
+  }
+  alert(`Người chơi ${activePlayer + 1} chơi trước`);
+
+  btnchoosePlayer.classList.add('hidden');
+  btnNew.classList.remove('hidden');
+  btnRoll.classList.remove('hidden');
+  btnHold.classList.remove('hidden');
 };
 init();
 const switchPlayer = function () {
@@ -44,6 +63,10 @@ const switchPlayer = function () {
   player0El.classList.toggle('player--active');
   player1El.classList.toggle('player--active');
 };
+//choose player
+btnchoosePlayer.addEventListener('click', function () {
+  choosePlayer();
+});
 
 // roll dice
 btnRoll.addEventListener('click', function () {
@@ -115,7 +138,7 @@ const result = function (number) {
         // finish
         playing = false;
         popUpQuestion.classList.add('hidden');
-        btnHold.classList.add('no-click');
+        btnHold.classList.add('hidden');
         diceEl.classList.add('hidden');
         document
           .querySelector(`.player--${activePlayer}`)
