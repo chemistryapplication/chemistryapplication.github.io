@@ -212,3 +212,7 @@ main {
   width: 40px;
   height: auto;
 }
+
+.btn--choosePlayer {
+  top: 30rem;
+}
