@@ -29,7 +29,6 @@ const cal = function (chemical) {
   if (chemical.ms > 0) {
     chemical.e = indexArr.indexOf(chemical.ml) + 1;
   } else chemical.e = indexArr.indexOf(chemical.ml) + indexArrLength + 1;
-  chemical.n = layer.indexOf(chemical.n) + 1;
   chemical.l = innerLayer[chemical.l];
   renderTableData(chemical);
 };
@@ -37,9 +36,9 @@ const cal = function (chemical) {
 const validateData = function (data) {
   // check empty id
   console.log(typeof data.ms);
-  if (data.n === "" || !layer.includes(data.n)) {
+  if (data.n < 1) {
     // check question
-    alert("n phải thuộc khoảng K và Q");
+    alert("n phải lớn hơn 0");
     return 0;
   }
 
@@ -49,7 +48,7 @@ const validateData = function (data) {
   //     return 0;
   //   }
 
-  if (data.l < 0 || data.l > layer.indexOf(data.n)) {
+  if (data.l < 0 || data.l > data.n) {
     console.log();
     alert("l thuộc khoảng từ 0 đến n-1");
     return 0;
@@ -75,9 +74,8 @@ function renderTableData(data) {
 
   const row = document.createElement("tr");
   // row.innerHTML = "<HTML code>";
-  row.innerHTML = `<th scope="row">${data.n}</th>
-      <td>${data.l}</td>
-      <td>${data.e}</td>`;
+  row.innerHTML = `<th scope="row">${layer[data.n - 1]}</th>
+      <td>${data.n}${data.l}${data.e}</td>`;
 
   tableBodyEl.appendChild(row);
 }
@@ -87,7 +85,7 @@ function renderTableData(data) {
 // submit button
 submitBtn.addEventListener("click", function () {
   const data = {
-    n: nInput.value,
+    n: parseInt(nInput.value),
     l: parseInt(lInput.value),
     ml: parseInt(mlInput.value),
     ms: parseFloat(msInput.value),
